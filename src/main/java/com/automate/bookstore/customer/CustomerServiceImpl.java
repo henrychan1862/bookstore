@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    @Autowired
     private final CustomerRepository customerRepository;
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
@@ -13,9 +14,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void getCustomerInfo(String customerName) {
-        Customer foundCustomer = customerRepository.findByHandleName(customerName);
-        System.out.println("This handle name is used by " + foundCustomer.getFirstName() + " "+ foundCustomer.getLastName());
-        return;
+    public Customer getCustomerInfo(String customerName) {
+        return customerRepository.findByHandleName(customerName);
     }
 }
