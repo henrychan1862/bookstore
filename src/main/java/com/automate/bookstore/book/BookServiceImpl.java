@@ -4,6 +4,7 @@ package com.automate.bookstore.book;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +15,14 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private final BookRepository bookRepository;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    @Autowired
+    private final BookSpecification bookSpecification;
+
+    public BookServiceImpl(BookRepository bookRepository, BookSpecification bookSpecification) {
         this.bookRepository = bookRepository;
+        this.bookSpecification = bookSpecification;
     }
+
 
     @Override
     public Book getBookInfo(long bookId) {
@@ -26,16 +32,22 @@ public class BookServiceImpl implements BookService {
         return foundBook.get();
     }
 
+
     @Override
-    public List<Book> searchBook(String category) {
-        List<Book> foundBooks = bookRepository.findAllByCategory(category);
+    public List<Book> searchBook(Optional<String> category,
+                                 Optional<String> author,
+                                 Optional<String> title,
+                                 Optional<Integer> priceMin,
+                                 Optional<Integer> priceMax,
+                                 Optional<Integer> ratingAbove) throws MethodArgumentTypeMismatchException {
+        List<Book> foundBooks = bookRepository.findAll(bookSpecification.buildFindAllByStringSpecs(category, author, title, priceMin, priceMax, ratingAbove));
         if (foundBooks.isEmpty())
-            throw new EntityNotFoundException("No Book is found within " + category + " category.");
+            throw new EntityNotFoundException("No Book is found with keywords provided.");
         return foundBooks;
     }
 
     @Override
     public List<Book> getBookRecommendations() {
-        return bookRepository.findAll();
+        return bookRepository.findAllByOrderByRatingDesc();
     }
 }
