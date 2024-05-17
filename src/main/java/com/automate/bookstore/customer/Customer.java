@@ -1,29 +1,33 @@
 package com.automate.bookstore.customer;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.automate.bookstore.order.Order;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 
 @Entity
 public class Customer {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
-    private String handleName;
+    private String userName;
     private String firstName;
     private String lastName;
     private String emailAddress;
     private String deliveryAddress;
     private int phoneNumber;
 
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> orders;
+
     public Customer() {
     }
 
     public Customer(Long customerId, String handleName, String firstName, String lastName, String emailAddress, String deliveryAddress, int phoneNumber) {
         this.customerId = customerId;
-        this.handleName = handleName;
+        this.userName = handleName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
@@ -39,12 +43,12 @@ public class Customer {
         this.customerId = customerId;
     }
 
-    public String getHandleName() {
-        return handleName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setHandleName(String handleName) {
-        this.handleName = handleName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFirstName() {

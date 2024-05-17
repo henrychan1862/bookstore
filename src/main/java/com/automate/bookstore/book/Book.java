@@ -1,14 +1,15 @@
 package com.automate.bookstore.book;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.automate.bookstore.order.Order;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Book {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
     private long ISBN13;
     private String title;
@@ -17,6 +18,8 @@ public class Book {
     private String category;
     private float rating;
 
+    @OneToMany(mappedBy = "book")
+    private Set<Order> orders;
 
     public Book() {
     }
