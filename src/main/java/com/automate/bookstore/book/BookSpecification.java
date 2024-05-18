@@ -10,18 +10,18 @@ import java.util.Optional;
 
 @Component
 public class BookSpecification {
-    public Specification<Book> buildFindAllByStringSpecs(Optional<String> category,
-                                                         Optional<String> author,
-                                                         Optional<String> title,
-                                                         Optional<Integer> priceMin,
-                                                         Optional<Integer> priceMax,
-                                                         Optional<Integer> ratingAbove) {
+    public Specification<Book> buildFindAllByStringSpecs(String category,
+                                                         String author,
+                                                         String title,
+                                                         Integer priceMin,
+                                                         Integer priceMax,
+                                                         Integer ratingAbove) {
         List<Specification<Book>> specs = new ArrayList<Specification<Book>>();
-            specs.add(category.map(this::filterByCategory).orElse(null));
-            specs.add(author.map(this::filterByAuthor).orElse(null));
-            specs.add(title.map(this::filterByTitle).orElse(null));
-            specs.add(filterByPrice(priceMin.orElse((int) 0), priceMax.orElse((int) 10000)));
-            specs.add(filterByRating(ratingAbove.orElse(0)));
+            specs.add(Optional.ofNullable(category).map(this::filterByCategory).orElse(null));
+            specs.add(Optional.ofNullable(author).map(this::filterByAuthor).orElse(null));
+            specs.add(Optional.ofNullable(title).map(this::filterByTitle).orElse(null));
+            specs.add(filterByPrice(priceMin, priceMax));
+            specs.add(filterByRating(ratingAbove));
         return Specification.allOf(specs);
     }
 

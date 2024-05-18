@@ -7,14 +7,16 @@ public interface BookService {
 
     Book getBookInfo(long bookId);
 
+    Book getBookInfoWithISBN13(long ISBN13);
+
 //    List<Book> searchBook(Optional<String> category, Optional<String> author, Optional<String> title);
 
-    List<Book> searchBook(Optional<String> category,
-                          Optional<String> author,
-                          Optional<String> title,
-                          Optional<Integer> priceMin,
-                          Optional<Integer> priceMax,
-                          Optional<Integer> ratingAbove);
+    List<Book> searchBook(String category,
+                          String author,
+                          String title,
+                          Integer priceMin,
+                          Integer priceMax,
+                          Integer ratingAbove);
 
     List<Book> getBookRecommendations();
 }

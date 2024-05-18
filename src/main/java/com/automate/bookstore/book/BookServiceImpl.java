@@ -28,26 +28,36 @@ public class BookServiceImpl implements BookService {
     public Book getBookInfo(long bookId) {
         Optional<Book> foundBook = bookRepository.findByBookId(bookId);
         if (foundBook.isEmpty())
-            throw new EntityNotFoundException("The book with id " + bookId + " is not found.");
+            throw new BookNotFoundException("The book with id " + bookId + " is not found.");
         return foundBook.get();
     }
 
+    @Override
+    public Book getBookInfoWithISBN13(long ISBN13) {
+        Optional<Book> foundBook = bookRepository.findByISBN13(ISBN13);
+        if (foundBook.isEmpty())
+            throw new BookNotFoundException("The book with ISBN13 " + ISBN13 + " is not found.");
+        return foundBook.get();
+    }
 
     @Override
-    public List<Book> searchBook(Optional<String> category,
-                                 Optional<String> author,
-                                 Optional<String> title,
-                                 Optional<Integer> priceMin,
-                                 Optional<Integer> priceMax,
-                                 Optional<Integer> ratingAbove) throws MethodArgumentTypeMismatchException {
+    public List<Book> searchBook(String category,
+                                 String author,
+                                 String title,
+                                 Integer priceMin,
+                                 Integer priceMax,
+                                 Integer ratingAbove) {
+
         List<Book> foundBooks = bookRepository.findAll(bookSpecification.buildFindAllByStringSpecs(category, author, title, priceMin, priceMax, ratingAbove));
+
         if (foundBooks.isEmpty())
-            throw new EntityNotFoundException("No Book is found with keywords provided.");
+            throw new BookNotFoundException("No Book is found with criteria provided.");
+
         return foundBooks;
     }
 
     @Override
     public List<Book> getBookRecommendations() {
-        return bookRepository.findAllByOrderByRatingDesc();
+        return bookRepository.findAll();
     }
 }

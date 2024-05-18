@@ -12,7 +12,6 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
 
     Optional<Book> findByBookId(Long bookId);
 
-    List<Book> findAllByCategory(String category);
+    Optional<Book> findByISBN13(Long ISBN13);
 
-    List<Book> findAllByOrderByRatingDesc();
 }
