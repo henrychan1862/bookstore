@@ -23,9 +23,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/books/**").permitAll()
-                        .requestMatchers("/customers/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/orders/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/books/**").permitAll()
+                        .requestMatchers("/api/customers/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/orders/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().denyAll())
                 .formLogin(withDefaults())
                 .httpBasic(withDefaults())
@@ -37,11 +37,11 @@ public class SecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
 
-        UserDetails user = User.withUsername("peter").password(passwordEncoder.encode("peter")).roles("USER").build();
+        UserDetails peter = User.withUsername("peter").password(passwordEncoder.encode("peter")).roles("USER").build();
         UserDetails henry = User.withUsername("henry").password(passwordEncoder.encode("henry")).roles("USER").build();
         UserDetails admin = User.withUsername("admin").password(passwordEncoder.encode("admin")).roles("USER", "ADMIN").build();
 
-        return new InMemoryUserDetailsManager(user, admin, henry);
+        return new InMemoryUserDetailsManager(peter, henry, admin);
     }
 
     @Bean
