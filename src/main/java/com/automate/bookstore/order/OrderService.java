@@ -6,17 +6,18 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
-import java.util.Optional;
 
+@PreAuthorize("#userName == principal.username")
 public interface OrderService {
 
-    @PreAuthorize("#customer.getUserName() == principal.username")
-    void placeOrder(Customer customer, Book book);
+    @Transactional
+    Order placeOrder(String userName, OrderTicket orderTicket);
 
-    @PreAuthorize("#customer.getUserName() == principal.username")
-    List<Order> viewOrders(Customer customer);
+    List<Order> viewOrders(String userName);
 
-    void cancelOrder(long orderId);
+    Order getOrderInfoWithCustomer(String userName, long orderId);
 
-    Order getOrderInfo(long orderId);
+    @Transactional
+    void cancelOrder(String userName, long orderId);
+
 }

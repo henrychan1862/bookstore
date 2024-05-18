@@ -34,16 +34,19 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    private int amount;
+
     public Order() {
     }
 
-    public Order(long orderId, Customer customer, Book book, LocalDateTime createdAt, LocalDateTime lastModified, OrderStatus status) {
+    public Order(long orderId, Customer customer, Book book, LocalDateTime createdAt, LocalDateTime lastModified, OrderStatus status, int amount) {
         this.orderId = orderId;
         this.customer = customer;
         this.book = book;
         this.createdAt = createdAt;
         this.lastModified = lastModified;
         this.status = status;
+        this.amount = amount;
     }
 
     public long getOrderId() {
@@ -92,6 +95,14 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }
 
