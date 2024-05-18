@@ -1,9 +1,8 @@
 package com.automate.bookstore.customer;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -11,8 +10,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private final CustomerRepository customerRepository;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    @Autowired
+    private CustomerMapper customerMapper;
+
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
+        this.customerMapper = customerMapper;
     }
 
     @Override
@@ -21,21 +24,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerInfo(String userName,
-                                   Optional<String> firstName,
-                                   Optional<String> lastName,
-                                   Optional<String> emailAddress,
-                                   Optional<String> deliveryAddress,
-                                   Optional<Integer> phoneNumber) {
+    public Customer updateCustomerInfo(String userName, CustomerDto customerNewInfo) {
+
+        if (customerNewInfo.equals(new CustomerDto()))
+            throw new CustomerInfoUpdateFailedException("Cannot update customer info with prohibited keys / null values");
 
         Customer customerToBeUpdated = getCustomerInfo(userName);
-
-        firstName.ifPresent(customerToBeUpdated::setFirstName);
-        lastName.ifPresent(customerToBeUpdated::setLastName);
-        emailAddress.ifPresent(customerToBeUpdated::setEmailAddress);
-        deliveryAddress.ifPresent(customerToBeUpdated::setDeliveryAddress);
-        phoneNumber.ifPresent(customerToBeUpdated::setPhoneNumber);
+        updateCustomerFromDto(customerNewInfo, customerToBeUpdated);
 
         customerRepository.save(customerToBeUpdated);
+
+        return customerToBeUpdated;
     }
+
+    @Override
+    public void updateCustomerFromDto(CustomerDto customerDto, Customer customer) {
+        customerMapper.updateCustomer(customerDto, customer);
+    }
+
+
 }

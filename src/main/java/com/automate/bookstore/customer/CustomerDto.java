@@ -1,59 +1,25 @@
 package com.automate.bookstore.customer;
 
-import com.automate.bookstore.order.Order;
-import jakarta.persistence.*;
 
-import java.util.Set;
+import java.util.Objects;
 
-
-@Entity
-public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
-
-    @Column(unique = true)
-    private String userName;
+public class CustomerDto {
 
     private String firstName;
     private String lastName;
-
-    @Column(unique = true)
     private String emailAddress;
     private String deliveryAddress;
-    private int phoneNumber;
+    private Integer phoneNumber;
 
-    @OneToMany(mappedBy = "customer")
-    private Set<Order> orders;
-
-    public Customer() {
+    public CustomerDto() {
     }
 
-    public Customer(Long customerId, String userName, String firstName, String lastName, String emailAddress, String deliveryAddress, int phoneNumber) {
-        this.customerId = customerId;
-        this.userName = userName;
+    public CustomerDto(String firstName, String lastName, String emailAddress, String deliveryAddress, int phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.deliveryAddress = deliveryAddress;
         this.phoneNumber = phoneNumber;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getFirstName() {
@@ -88,11 +54,26 @@ public class Customer {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public int getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CustomerDto that = (CustomerDto) o;
+
+        if (!Objects.equals(firstName, that.firstName)) return false;
+        if (!Objects.equals(lastName, that.lastName)) return false;
+        if (!Objects.equals(emailAddress, that.emailAddress)) return false;
+        if (!Objects.equals(deliveryAddress, that.deliveryAddress))
+            return false;
+        return Objects.equals(phoneNumber, that.phoneNumber);
     }
 }

@@ -3,11 +3,11 @@ package com.automate.bookstore.customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 public class CustomerController {
 
     @Autowired
@@ -18,15 +18,16 @@ public class CustomerController {
         return customerService.getCustomerInfo(userName);
     }
 
-    @PutMapping("/{username}/edit")
-    public void customerInfoUpdate(@PathVariable("username") String userName,
-                                   @RequestParam(name = "first_name") Optional<String> firstName,
-                                   @RequestParam(name = "last_name") Optional<String> lastName,
-                                   @RequestParam(name = "email") Optional<String> emailAddress,
-                                   @RequestParam(name = "home") Optional<String> deliveryAddress,
-                                   @RequestParam(name = "phone") Optional<Integer> phoneNumber) {
-
-        customerService.updateCustomerInfo(userName, firstName, lastName, emailAddress, deliveryAddress, phoneNumber);
+    @PutMapping("/{username}")
+    public ResponseEntity<Customer> customerInfoUpdateWithJson(@PathVariable("username") String userName,
+                                               @RequestBody CustomerDto customerNewInfo) {
+        Customer customerUpdated = customerService.updateCustomerInfo(userName, customerNewInfo);
+        return ResponseEntity
+                .created(ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .build()
+                        .toUri())
+                .body(customerUpdated);
     }
 
 }
