@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
-
+/**
+ * Entity to store information for customer
+ */
 @Entity
 public class Customer {
 

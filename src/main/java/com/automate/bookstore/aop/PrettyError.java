@@ -2,6 +2,9 @@ package com.automate.bookstore.aop;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * This is a helper class handling exception information with @ControllerAdvice.
+ */
 public class PrettyError {
 
     private HttpStatus responseStatus;

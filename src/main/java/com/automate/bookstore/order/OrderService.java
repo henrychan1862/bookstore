@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
-@PreAuthorize("#userName == principal.username")
+@PreAuthorize("#userName == principal.username")    // identity check
 public interface OrderService {
 
     @Transactional

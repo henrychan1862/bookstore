@@ -4,6 +4,10 @@ package com.automate.bookstore.order;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
+/**
+ * A Dto class to get the important field of an ordering operation
+ * requires ISBN13 of book and amount (1-10)
+ */
 public class OrderTicket {
 
     private long ISBN13;

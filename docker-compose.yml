@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  psql-db:
+    image: postgres
+    container_name: psql-db
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=bookstore
+    ports:
+      - '1422:5432'
+
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8050:8080' # expose to port 8050
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/bookstore
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update  # create schema by JPA
+      - SPRING_SQL_INIT_MODE=always # allow injection of data.sql in src/main/resources
+      - SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION=true # let data injects after schema is created
+    depends_on:
+      - psql-db

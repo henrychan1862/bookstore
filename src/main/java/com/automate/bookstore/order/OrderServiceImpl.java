@@ -6,9 +6,13 @@ import com.automate.bookstore.customer.Customer;
 import com.automate.bookstore.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
+/**
+ * Implementation of service layer for orders
+ */
 @Service
 public class OrderServiceImpl implements OrderService{
 
@@ -16,11 +20,18 @@ public class OrderServiceImpl implements OrderService{
     private OrderRepository orderRepository;
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerService customerService;    // require customer service to get customer info for identity check
 
     @Autowired
-    private BookService bookService;
+    private BookService bookService;    // require book service to place order
 
+    /**
+     * place an order for customers with given username, integrate customer service for
+     * getting customer information and book service for getting book details
+     * @param userName username of customer
+     * @param orderTicket order ticket, contains ISBN13 of book and amount
+     * @return the placed order object
+     */
     @Override
     public Order placeOrder(String userName, OrderTicket orderTicket) {
 
@@ -38,6 +49,12 @@ public class OrderServiceImpl implements OrderService{
     }
 
 
+    /**
+     * view all orders placed by customers with given username
+     * @param userName username of customer
+     * @return list of orders
+     * @throws OrderNotFoundException if customer has not placed any order yet
+     */
     @Override
     public List<Order> viewOrders(String userName) {
 
@@ -50,7 +67,13 @@ public class OrderServiceImpl implements OrderService{
         return foundOrders;
     }
 
-
+    /**
+     * view single order placed by customers with given username and order ID
+     * @param userName username of customer
+     * @param orderId order ID
+     * @return the order object
+     * @throws OrderNotFoundException if customer has no order with given order id
+     */
     @Override
     public Order getOrderInfoWithCustomer(String userName, long orderId) {
 
@@ -60,7 +83,12 @@ public class OrderServiceImpl implements OrderService{
                 () -> new OrderNotFoundException("No order with id " + orderId));
     }
 
-
+    /**
+     * delete single order placed by customers given username and order ID
+     * @param userName username of customer
+     * @param orderId order ID
+     * @return void
+     */
     @Override
     public void cancelOrder(String userName, long orderId) {
 

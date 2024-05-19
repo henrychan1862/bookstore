@@ -9,8 +9,6 @@ public interface BookService {
 
     Book getBookInfoWithISBN13(long ISBN13);
 
-//    List<Book> searchBook(Optional<String> category, Optional<String> author, Optional<String> title);
-
     List<Book> searchBook(String category,
                           String author,
                           String title,

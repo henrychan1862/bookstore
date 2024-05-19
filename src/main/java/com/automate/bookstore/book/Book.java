@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+
+/**
+ * Entity to store information for Books
+ */
 @Entity
 public class Book {
 
@@ -22,7 +26,7 @@ public class Book {
     private float rating;
 
     @OneToMany(mappedBy = "book")
-    private Set<Order> orders;
+    private Set<Order> orders;  //  one-to-many relationship with orders
 
     public Book() {
     }

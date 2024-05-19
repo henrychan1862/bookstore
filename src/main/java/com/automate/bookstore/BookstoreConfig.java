@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+
+/**
+ * enable configuration for web security and invoke jpa to take care of temporal field in entities
+ */
 @Configuration
 @EnableWebSecurity
 @EnableJpaAuditing  // cannot put at Application Entry Point otherwise will halt tests

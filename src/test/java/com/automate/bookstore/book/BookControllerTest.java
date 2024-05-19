@@ -19,7 +19,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
+/**
+ * Endpoints unit tests for book controller.
+ * Service layers are being mocked to create isolated testing environment.
+ */
 @WebMvcTest(controllers = BookController.class)
 @AutoConfigureMockMvc(addFilters = false)   // turn off security filter
 public class BookControllerTest {

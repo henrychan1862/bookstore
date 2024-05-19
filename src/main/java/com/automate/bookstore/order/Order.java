@@ -9,6 +9,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity to store information for customer
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "CustomerOrder")
@@ -19,11 +22,11 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_fk")
-    private Customer customer;
+    private Customer customer;  //owning side of many-to-one relationship with customer
 
     @ManyToOne
     @JoinColumn(name = "book_fk")
-    private Book book;
+    private Book book;  //owning side of many-to-one relationship with book
 
     @CreatedDate
     private LocalDateTime createdAt;

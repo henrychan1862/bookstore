@@ -3,6 +3,9 @@ package com.automate.bookstore.customer;
 
 import java.util.Objects;
 
+/**
+ * Dto object dedicated for customer info update operation.
+ */
 public class CustomerDto {
 
     private String firstName;

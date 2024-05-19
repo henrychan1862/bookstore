@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
+/**
+ * This controller handles exceptions globally and respond with beautiful json.
+ */
 @ControllerAdvice
 public class BookstoreControllerAdvice {
 
+    // return 404Not_Found if book or order is not found
     @ExceptionHandler({BookNotFoundException.class, OrderNotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
@@ -23,6 +26,7 @@ public class BookstoreControllerAdvice {
         return new PrettyError(HttpStatus.NOT_FOUND, "We cannot find the " + bookOrOrder, e.getMessage());
     }
 
+    // return 400Bad_Request for invalid request parameters
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -32,6 +36,7 @@ public class BookstoreControllerAdvice {
                 "Value " + e.getValue() + " provided for parameter " + e.getName() + " is not of type " + e.getRequiredType());
     }
 
+    // return 400Bad_Request for invalid request body
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -39,6 +44,7 @@ public class BookstoreControllerAdvice {
         return new PrettyError(HttpStatus.BAD_REQUEST, "Invalid request body. Please revise", e.getMessage());
     }
 
+    // return 400Bad_Request for request to update prohibited field / provide null values in customer update action
     @ExceptionHandler(CustomerInfoUpdateFailedException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody

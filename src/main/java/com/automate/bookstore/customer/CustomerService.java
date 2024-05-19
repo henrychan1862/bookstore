@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface CustomerService {
 
-    @PreAuthorize("#userName == principal.username")
+    @PreAuthorize("#userName == principal.username")    // identity check
     Customer getCustomerInfo(String userName);
 
     @Transactional
-    @PreAuthorize("#userName == principal.username")
+    @PreAuthorize("#userName == principal.username")    // identity check
     Customer updateCustomerInfo(String userName, CustomerDto customerNewInfo);
 
     void updateCustomerFromDto(CustomerDto customerDto, Customer customer);

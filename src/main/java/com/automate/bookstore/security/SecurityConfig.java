@@ -15,6 +15,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * Security configuration to lock customers and orders api for users
+ * Also, create dummy users and admin account. Persisted in an in-memory database. (yet to be changed)
+ */
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
