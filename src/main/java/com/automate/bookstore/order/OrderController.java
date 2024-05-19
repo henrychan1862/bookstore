@@ -15,28 +15,27 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/{username}")
-    public ResponseEntity<Order> orderBook(@PathVariable("username") String userName,
-                                           @Valid @RequestBody OrderTicket orderTicket) {
-
-        Order orderPlaced = orderService.placeOrder(userName, orderTicket);
-
-        return ResponseEntity
-                .created(ServletUriComponentsBuilder
-                        .fromCurrentContextPath()
-                        .path("/{orderId}")
-                        .buildAndExpand(orderPlaced.getOrderId())
-                        .toUri())
-                .body(orderPlaced);
-    }
-
-
     @GetMapping("/{username}")
     public List<Order> ordersView(@PathVariable("username") String userName) {
 
         return orderService.viewOrders(userName);
     }
 
+
+    @PostMapping("/{username}")
+    public ResponseEntity<Order> orderBook(@PathVariable("username") String userName,
+                                           @RequestBody OrderTicket orderTicket) {
+
+        Order orderPlaced = orderService.placeOrder(userName, orderTicket);
+
+        return ResponseEntity
+                .created(ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{orderId}")
+                        .buildAndExpand(orderPlaced.getOrderId())
+                        .toUri())
+                .body(orderPlaced);
+    }
 
     @GetMapping("/{username}/{orderId}")
     public Order orderDetails(@PathVariable("username") String userName,

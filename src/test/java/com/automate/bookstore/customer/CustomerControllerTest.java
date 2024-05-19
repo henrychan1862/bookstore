@@ -1,8 +1,6 @@
 package com.automate.bookstore.customer;
 
-import com.automate.bookstore.book.Book;
-import com.automate.bookstore.book.BookService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.automate.bookstore.TestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -21,11 +17,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
-import com.automate.bookstore.book.BookController;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 @WebMvcTest(controllers = CustomerController.class)
 @AutoConfigureMockMvc(addFilters = false)   // turn off security filter
@@ -48,7 +39,7 @@ public class CustomerControllerTest {
 
     @Test
     public void customerDetails_ReturnCustomer() throws Exception {
-        given(customerService.getCustomerInfo(anyString())).willReturn(customerA);
+        given(customerService.getCustomerInfo("test")).willReturn(customerA);
 
         mockMvc.perform(get("/api/customers/{username}", "test"))
                 .andDo(print())
@@ -68,11 +59,11 @@ public class CustomerControllerTest {
 
     @Test
     public void customerInfoUpdateWithJson_ReturnUpdatedCustomer() throws Exception {
-        given(customerService.updateCustomerInfo(anyString(), any(CustomerDto.class))).willReturn(customerA);
+        given(customerService.updateCustomerInfo("test", customerDtoA)).willReturn(customerA);
 
         mockMvc.perform(put("/api/customers/{username}", "test")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(customerDtoA)))
+                        .content(TestHelper.asJsonString(customerDtoA)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "http://localhost/api/customers/test"))
@@ -88,15 +79,4 @@ public class CustomerControllerTest {
         verify(customerService).updateCustomerInfo(anyString(), any(CustomerDto.class));
     }
 
-    /**
-    * helper function from spring.io
-    */
-    protected static String asJsonString(final Object obj) {
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

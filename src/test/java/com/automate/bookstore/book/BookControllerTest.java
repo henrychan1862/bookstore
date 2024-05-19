@@ -39,7 +39,7 @@ public class BookControllerTest {
 
     @Test
     public void  bookDetails_ReturnBook() throws Exception {
-        given(bookService.getBookInfo(anyLong())).willReturn(bookA);
+        given(bookService.getBookInfo(1L)).willReturn(bookA);
 
         mockMvc.perform(get("/api/books/{bookId}", 1L))
                 .andDo(print())
@@ -58,7 +58,7 @@ public class BookControllerTest {
 
     @Test
     public void  bookDetailsByISBN13_ReturnBook() throws Exception {
-        given(bookService.getBookInfoWithISBN13(anyLong())).willReturn(bookA);
+        given(bookService.getBookInfoWithISBN13(1234567890123L)).willReturn(bookA);
 
         mockMvc.perform(get("/api/books/isbn13/{isbn13}", 1234567890123L))
                 .andDo(print())
@@ -95,7 +95,7 @@ public class BookControllerTest {
 
     @Test
     public void  bookSearch_ReturnListOfBook() throws Exception {
-        given(bookService.searchBook(anyString(), anyString(), anyString(), anyInt(), anyInt(), anyInt()))
+        given(bookService.searchBook( "Category A", "Author A","Title A",0,1000, 0))
                 .willReturn(List.of(bookA));
 
         mockMvc.perform(get("/api/books/search")

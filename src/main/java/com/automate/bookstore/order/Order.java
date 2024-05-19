@@ -31,21 +31,24 @@ public class Order {
     @LastModifiedDate
     private LocalDateTime lastModified;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
     private int amount;
 
     public Order() {
     }
 
-    public Order(long orderId, Customer customer, Book book, LocalDateTime createdAt, LocalDateTime lastModified, OrderStatus status, int amount) {
+    public Order(long orderId, Customer customer, Book book, int amount) {
+        this.orderId = orderId;
+        this.customer = customer;
+        this.book = book;
+        this.amount = amount;
+    }
+
+    public Order(long orderId, Customer customer, Book book, LocalDateTime createdAt, LocalDateTime lastModified, int amount) {
         this.orderId = orderId;
         this.customer = customer;
         this.book = book;
         this.createdAt = createdAt;
         this.lastModified = lastModified;
-        this.status = status;
         this.amount = amount;
     }
 
@@ -87,14 +90,6 @@ public class Order {
 
     public void setLastModified(LocalDateTime lastModified) {
         this.lastModified = lastModified;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
     }
 
     public int getAmount() {

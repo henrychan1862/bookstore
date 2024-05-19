@@ -31,7 +31,6 @@ public class OrderServiceImpl implements OrderService{
         order.setCustomer(customerLoggedIn);
         order.setBook(bookOrdering);
         order.setAmount(orderTicket.getAmount());
-        order.setStatus(OrderStatus.ORDERED);
 
         orderRepository.save(order);
 
